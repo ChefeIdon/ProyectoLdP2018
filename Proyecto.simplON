@@ -1,0 +1,590 @@
+%%%%% Traduccion en Simplesem de Proyecto - Tema II
+%%%%% Lenguajes de Programación - Año 2018
+%%%%% Autor: Agra Federico Germán
+%%%%% LU: 94186
+
+%%%--------------------Creación de VTs------------------------------------------ 
+%%% Carga la VT de la clase Padre
+        SetLabel VTPadre, Libre                                 			%Creo la etiqueta para la VT de Padre
+		SetD Libre, initPadre        	@VTA: direccion de initPadre    	
+        SetD Libre+1, superSeterPadre   @VTA: direccion de superSeterPadre  
+        SetD Libre+2, m3Padre         	@VTA: direccion de m3Padre      	
+        SetD Libre+3, m4Padre       	@VTA: direccion de m4Padre      	
+		SetD Libre+4, m5Padre       	@VTA: direccion de m5Padre      	
+        SetLibre Libre+5                                        			%Actualizo Libre
+        SetActual Libre                                         			%Actualizo Actual
+
+%%% Carga la VT de la clase Hijo2
+        SetLabel VTHijo2, Libre                                 			%Creo la etiqueta para la VT de Hijo2
+		SetD Libre, initHijo2        	@VTA: direccion de initHijo2    	
+        SetD Libre+1, superSeterPadre   @VTA: direccion de superSeterPadre  
+        SetD Libre+2, m3Padre         	@VTA: direccion de m3Padre      	%Heredado de Padre
+        SetD Libre+3, m4Hijo2      		@VTA: direccion de m4Hijo2			
+		SetD Libre+4, m5Padre       	@VTA: direccion de m5Padre      	%Heredado de Padre
+		SetD Libre+5, superSeterHijo2
+		SetD Libre+6, m6Hijo2       	@VTA: direccion de m6Hijo2      	
+		SetD Libre+7, m7Hijo2       	@VTA: direccion de m7Hijo2
+		
+        SetLibre Libre+8                                        			%Actualizo Libre
+        SetActual Libre  													%Actualizo Actual
+		
+%%% Carga la VT de la clase Hijo3
+        SetLabel VTHijo3, Libre                                 			%Creo la etiqueta para la VT de Hijo3
+		SetD Libre, initHijo3        	@VTA: direccion de initHijo3    	
+        SetD Libre+1, superSeterPadre   @VTA: direccion de superSeterPadre  
+        SetD Libre+2, m3Padre         	@VTA: direccion de m3Padre      	%Heredado de Padre
+        SetD Libre+3, m4Hijo3      		@VTA: direccion de m4Hijo2			
+		SetD Libre+4, m5Padre       	@VTA: direccion de m5Padre      	%Heredado de Padre
+		SetD Libre+5, superSeterHijo2
+		SetD Libre+6, m6Hijo2       	@VTA: direccion de m6Hijo2      	
+		SetD Libre+7, m7Hijo2       	@VTA: direccion de m7Hijo2
+		SetD Libre+8, superSeterHijo3
+        SetLibre Libre+9                                        			%Actualizo Libre
+        SetActual Libre  													%Actualizo Actual
+		
+%%% Carga la VT de la clase Hijo4
+        SetLabel VTHijo4, Libre                                 			%Creo la etiqueta para la VT de Hijo4
+		SetD Libre, initHijo4        	@VTA: direccion de initHijo4    	
+        SetD Libre+1, superSeterPadre   @VTA: direccion de superSeterPadre  
+        SetD Libre+2, m3Padre         	@VTA: direccion de m3Padre      	%Heredado de Padre
+        SetD Libre+3, m4Hijo4      		@VTA: direccion de m4Hijo2			
+		SetD Libre+4, m5Padre       	@VTA: direccion de m5Padre      	%Heredado de Padre
+		SetD Libre+5, superSeterHijo2
+		SetD Libre+6, m6Hijo4       	@VTA: direccion de m6Hijo2      	
+		SetD Libre+7, m7Hijo2       	@VTA: direccion de m7Hijo2
+		SetD Libre+8, superSeterHijo3
+		SetD Libre+9, superSeterHijo4 
+        SetLibre Libre+10                                       			%Actualizo Libre
+        SetActual Libre 
+		
+%%% Carga la VT de la clase Lenguajes2018Tema2
+        SetLabel VTLenguajes2018Tema2, Libre                        %Creo la etiqueta para la VT de Lenguajes2018Tema2
+        SetLibre Libre+1                                        	%Actualizo Libre segun el tamaño de la VTA
+        SetActual Libre                                         	%Actualizo actual también
+%%%-----------------------------------------------------------------------------
+
+%%%-------------Codigo de Incializacion (Llamada a main)------------------------
+%%% Llama a main y finaliza
+        SetD Libre, pc+5            @PTR    %Guardo puntero de retorno
+        SetD Libre+1, actual        @ED     %Guardo enlace dinamico                                    
+        SetActual Libre                     %Muevo actual para que apunte al RA que acabo de crear para main
+        SetLibre Actual+3                   %Muevo libre segun el tamano del RA de main (PR+ED+v1=3)
+        Jump main                           %Salto al codigo de main
+        Halt                                %Cuando termino de ejecutar main finalizo
+%%%-----------------------------------------------------------------------------
+
+%%%------------------------Traducción Clase Padre-------------------------------
+
+%%%--------------------Traducción de initPadre de Padre-------------------------
+initPadre	SetOut -1000110001			@print
+			SetH D[Actual+2]+1, 1		@v1=1          	%Guardo el valor 1 en v1 a traves de this en el RA
+			SetH D[Actual+2]+2, 2   	@v2=2          	%Guardo el valor 2 en v2 a traves de this en el RA
+			SetH D[Actual+2]+3, 3   	@v3=3 			%Guardo el valor 3 en v3 a traves de this en el RA
+			
+			SetLibre Actual                            	%Limpio la memoria del RA de initPadre
+			SetActual D[Libre+1]                       	%Muevo Actual a donde tenia el enlase dinamico
+			Jump D[Libre] 								%Salto al la dirección contenida en PR
+
+%%%--------------------Traducción de superSeter de Padre------------------------
+superSeterPadre	SetOut -1000120001					@print
+				SetH D[Actual+2]+1, D[Actual+3]     @v1=p1          %Guardo el valor del parametro p1 en v1 a traves de this en el RA
+				SetH D[Actual+2]+2, D[Actual+4]   	@v2=p2          %Guardo el valor del parametro p2 en v2 a traves de this en el RA
+				SetH D[Actual+2]+3, D[Actual+5]   	@v3=p3 			%Guardo el valor del parametro p3 en v3 a traves de this en el RA
+				
+				SetLibre Actual                                     %Limpio la memoria del RA de superSeterPadre
+				SetActual D[Libre+1]                                %Muevo Actual a donde tenia el enlase dinamico
+				Jump D[Libre]   									%Salto al la dirección contenida en PR
+
+%%%------------------------Traducción de m3 de Padre----------------------------
+m3Padre	SetOut -1000130001					@print
+
+		%%%-----------------Llamada a init de Padre-----------------------------	
+		SetD Libre, pc+6			@PTR				%Guardo el punto de retorno
+		SetD Libre+1, Actual		@ED					%Guardo el enlace dinámico
+		SetD Libre+2, D[Actual+2]	@THIS				%Guardo el this
+		SetActual Libre                                	%Muevo Actual a donde tenia el enlase dinamico
+		SetLibre Actual+3                              	%Muevo libre segun el tamaño del RA de init(PR+ED+this=3)
+		Jump D[H[D[Actual+2]]]							%Salto al codigo de init segun la VT del objeto receptor (el this del RA que acabo de crear)
+		
+		%%%----------------Traduccion llamada y retorno return m4()-------------
+        SetLibre Libre+1            @Lugar Retorno      %Como m4 devuelve algo reservo lugar para ese valor
+        SetD Libre, pc+6           	@PTR                %Guardo el puntero de retorno para volver de m4Padre
+        SetD Libre+1, Actual        @ED                 %Guardo enlace dinámico para al volver apuntar al RA m3Padre
+        SetD Libre+2, D[Actual+2]   @This               %Guardo this
+        SetActual Libre                                 %Muevo actual para que apunte al RA que acabo de crear para m4Padre
+        SetLibre Actual+3                               %Reservo espacio para PR+ED+this de m4
+        Jump D[H[D[Actual+2]]+3]                      	%Salto al codigo de m4 segun la VT del objeto receptor
+        SetD Actual-1, D[Libre-1]   @return m4()        %Al volver de la llamada retorno el valor de m4()
+        
+		SetLibre Actual									%Actualizo libre al anterior registro de activación
+		SetActual D[Libre+1] 							%Actualizo actual por el contenido en el enlace dinámico
+		Jump D[Libre]									%Salto al la dirección contenida en PR
+
+%%%------------------------Traducción de m4 de Padre----------------------------
+m4Padre	SetLibre Libre+2
+
+		SetOut -1000140001			@print
+
+		%%%-------Creamos el Obj de clase Hijo2 y lo guardamos en x-------------
+		SetD Actual+3, PO       	@x = new Hijo2()      		%Guardo en x una ref al objeto que creo
+        SetH PO, VTHijo2        	@Obj. Clase Hijo2 - VTHijo2	%Le agrego la VT al nuevo objeto 
+        SetPO PO+5                                      		%Incremento el PO segun el tamaño de objeto que cree (ref_VT+4var)
+		
+		%%%-------Traducción llamada y asignacion w = x.m3()--------------------
+		SetLibre Libre+1            @Lugar Retorno      %Como m3 devuelve algo reservo lugar para ese valor
+        SetD Libre, pc+6            @PTR                %Guardo el puntero de retorno para volver de m3
+        SetD Libre+1, Actual        @ED                 %Guardo enlace dinámico
+        SetD Libre+2, D[Actual+3]   @This               %Guardo this
+        SetActual Libre                                 %Muevo actual para que apunte al RA que acabo de crear
+        SetLibre Actual+3                               %Reservo espacio para PR+ED+this de m3
+        Jump D[H[D[Actual+2]]+2]                      	%Salto al código de m3 segun la VT del objeto receptor (el this del RA que acabo de crear)
+        SetD Actual+4, D[Libre-1]   @w = x.m3()       	%Al volver de la llamada tengo en el lugar que reserve para el retorno el valor que guardo en w
+        SetLibre Libre-1                                %Ya use el valor de retorno asi que lo libero
+		
+		%%%--------------------Retorno w+v1+v2+v3-------------------------------
+		SetD Actual-1, D[Actual+4]+H[D[Actual+2]+1]+H[D[Actual+2]+2]+H[D[Actual+2]+3]	
+		
+		SetLibre Actual																	%Actualizo Libre
+		SetActual D[Libre+1]															%Actualizo Actual
+		Jump D[Libre]																	%Actualizo PC
+		
+%%%------------------------Traducción de m5 de Padre----------------------------		
+m5Padre	SetLibre Libre+3												%Reservo espacio para las variables locales
+
+		SetOut -1000150001							@print		
+		
+		%%%--------------Leemos por pantalla el valor de x----------------------
+		SetIn Actual+3								@x=read()
+		
+		%%%-------------Traducción asignacion r = 0-----------------------------
+		SetD Actual+4, 0
+		
+		%%%--------------Traducción sentencia for-------------------------------
+		SetD Actual+5, 0							@i=0				%Inicializo la variable de control
+inilp1	JumpT endlp1, !(D[Actual+5]<D[Actual+3])						%Salto al final del loop si es que no se da la condición
+		SetD Actual+4, D[Actual+4]+(H[D[Actual+2]+3]*D[Actual+5])		%Cuerpo del for: Hago la asignación r = r + v3*i;
+		SetD Actual+5, D[Actual+5]+1 				@i++				%Incremento en 1 a la variable de control i
+		Jump inilp1 													%Salto al inicio del loop
+
+endlp1	SetD Actual-1, D[Actual+4]										%Retorno r
+		
+		SetLibre Actual													%Actualizo Libre
+		SetActual D[Libre+1]											%Actualizo Actual
+		Jump D[Libre]													%Actualizo PC
+%%%----------------------Fin Traducción Clase Padre----------------------------
+
+%%%------------------------Traducción Clase Hijo2------------------------------
+
+%%%----------------------Traducción de init de  Hijo2--------------------------
+initHijo2	SetOut -1000210001						@print
+			
+			%%%----------------Llamo al init de la clase Padre-----------------
+			SetD Libre, pc+6            		@PTR                %Guardo el puntero de retorno para volver de initPadre
+			SetD Libre+1, Actual        		@ED                 %Guardo enlace dinámico
+			SetD Libre+2, D[Actual+2]   		@This               %Guardo this
+			SetActual Libre                               			%Muevo actual para que apunte al RA que acabo de crear
+			SetLibre Actual+3                            		   	%Muevo libre segun el tamaño del RA de initPadre (PR+ED+this+3var=6)
+			Jump initPadre               							%Salto al código de initPadre segun la VT del objeto receptor (el this del RA que acabo de crear)
+			SetH D[Actual+2]+4, 4   			@v4=4 				%Guardo el valor 4 en v4 a traves de this en el RA
+			
+			SetLibre Actual                            				%Limpio la memoria del RA de initHijo2
+			SetActual D[Libre+1]                       				%Muevo Actual a donde tenia el enlase dinamico
+			Jump D[Libre] 											%Actualizo PC
+
+%%%--------------------Traducción de superSeter de Hijo2---------------------
+superSeterHijo2	SetOut -1000220001					@print
+				
+				%%%-----------Llamo al superseter de la clase Padre----------
+				SetD Libre, pc+9            		@PTR                %Guardo el puntero de retorno para volver de superSeterPadre
+				SetD Libre+1, Actual        		@ED                 %Guardo enlace dinámico
+				SetD Libre+2, D[Actual+2]   		@This               %Guardo this
+				SetD Libre+3, D[Actual+3]			@param p1
+				SetD Libre+4, D[Actual+4]			@param p2
+				SetD Libre+5, D[Actual+5]			@param p3
+				SetActual Libre                               			%Muevo actual para que apunte al RA que acabo de crear
+				SetLibre Actual+6                            		   	%Muevo libre segun el tamaño del RA de superSeterPadre (PR+ED+this+3par=6)
+				Jump D[H[D[Actual+2]]+1]                      			%Salto al código de superSeterPadre segun la VT del objeto receptor (el this del RA que acabo de crear)			
+				SetH D[Actual+2]+4, D[Actual+6]   	@v4=p4 				%Guardo el valor del parámetro p4 en v4 a traves de this en el RA
+				
+				SetLibre Actual                                     	%Limpio la memoria del RA de superSeterHijo2
+				SetActual D[Libre+1]                                	%Muevo Actual a donde tenia el enlase dinamico
+				Jump D[Libre]											%Actualizo PC
+
+%%%------------------------Traducción de m4 de Hijo2----------------------------
+m4Hijo2	SetLibre Libre+4
+		
+		SetOut -1000240001			@print	
+
+		%%%-------Traducción llamada y asignacion t1 = m7(8)--------------------
+		SetLibre Libre+1            @Lugar Retorno      %Como m7 devuelve algo reservo lugar para ese valor
+        SetD Libre, pc+7            @PTR                %Guardo el puntero de retorno para volver de m7
+        SetD Libre+1, Actual        @ED                 %Guardo enlace dinámico
+        SetD Libre+2, D[Actual+2]   @This               %Guardo this
+		SetD Libre+3, 8			   	@param 8            %Paso por parametro 8
+        SetActual Libre                                 %Muevo actual para que apunte al RA que acabo de crear
+        SetLibre Actual+4                               %Muevo libre segun el tamaño del RA de m7 (PR+ED+this+p=4)
+        Jump D[H[D[Actual+2]]+7]                      	%Salto al código de m7 segun la VT del objeto receptor (el this del RA que acabo de crear)
+        SetD Actual+3, D[Libre-1]   @t1=m7(8)        	%Al volver de la llamada tengo en el lugar que reserve para el retorno el valor que guardo en t1
+        SetLibre Libre-1                                %Ya use el valor de retorno asi que lo libero
+		
+		%%%-------Traducción llamada y asignacion t2 = m6()---------------------
+		SetLibre Libre+1            @Lugar Retorno      %Como m6 devuelve algo reservo lugar para ese valor
+        SetD Libre, pc+6            @PTR                %Guardo el puntero de retorno para volver de m6
+        SetD Libre+1, Actual        @ED                 %Guardo enlace dinámico
+        SetD Libre+2, D[Actual+2]   @This               %Guardo this
+        SetActual Libre                                 %Muevo actual para que apunte al RA que acabo de crear
+        SetLibre Actual+3                               %Reservo espacio para PR+ED+this de m6
+        Jump D[H[D[Actual+2]]+6]                      	%Salto al código de m7 segun la VT del objeto receptor (el this del RA que acabo de crear)
+        SetD Actual+4, D[Libre-1]   @t2 = m6()        	%Al volver de la llamada tengo en el lugar que reserve para el retorno el valor que guardo en t2
+        SetLibre Libre-1                                %Ya use el valor de retorno asi que lo libero
+		
+		%%%-------Creamos el Obj de clase Hijo2 y lo guardamos en x-------------
+		SetD Actual+5, PO       	@x = new Hijo3()      		%Guardo en x una ref al objeto que creo
+        SetH PO, VTHijo3       		@Obj. Clase Hijo3 - VTHijo3	%Le agrego la VT al nuevo objeto 
+        SetPO PO+6												%Incremento el PO segun el tamaño de objeto que cree (ref_VT+5var)
+		
+		%%%-------Traducción llamada y asignacion w = x.m3()--------------------
+		SetLibre Libre+1            @Lugar Retorno      %Como m3 devuelve algo reservo lugar para ese valor
+        SetD Libre, pc+6            @PTR                %Guardo el puntero de retorno para volver de m3
+        SetD Libre+1, Actual        @ED                 %Guardo enlace dinámico
+        SetD Libre+2, D[Actual+5]   @This               %Guardo this
+        SetActual Libre                                 %Muevo actual para que apunte al RA que acabo de crear
+        SetLibre Actual+3                               %Reservo espacio para PR+ED+this de m3
+        Jump D[H[D[Actual+2]]+2]                      	%Salto al código de m3 segun la VT del objeto receptor (el this del RA que acabo de crear)
+        SetD Actual+6, D[Libre-1]   @w = x.m3()       	%Al volver de la llamada tengo en el lugar que reserve para el retorno el valor que guardo en w
+        SetLibre Libre-1                                %Ya use el valor de retorno asi que lo libero
+		
+		%%%--------------Retorno w+ t1 + t2+ (v1+v2)*(v3+v4)--------------------
+		SetD Actual-1, (H[D[Actual+2]+1]+H[D[Actual+2]+2])*(H[D[Actual+2]+3]+H[D[Actual+2]+4])+D[Actual+6]+D[Actual+3]+D[Actual+4]	
+		
+		SetLibre Actual																	%Actualizo Libre
+		SetActual D[Libre+1]															%Actualizo Actual
+		Jump D[Libre]																	%Actualizo PC
+		
+%%%------------------------Traducción de m6 de Hijo2----------------------------
+m6Hijo2	SetOut -1000260001					@print	
+
+		SetD Actual-1, 10					%Retorno 10;
+		
+		SetLibre Actual						%Actualizo Libre
+		SetActual D[Libre+1]				%Actualizo Actual
+		Jump D[Libre]						%Actualizo PC
+		
+%%%------------------------Traducción de m7 de Hijo2----------------------------
+m7Hijo2	SetOut -1000270001					@print	
+
+		SetH D[Actual+2]+2, D[Actual+3]     @v2=p       %Guardo el valor del parametro p en v2  a traves de this en el RA
+
+		SetD Actual-1, D[Actual+3]*H[D[Actual+2]+4]		%Retorno p*v4;
+		
+		SetLibre Actual									%Actualizo Libre
+		SetActual D[Libre+1]							%Actualizo Actual
+		Jump D[Libre]									%Actualizo PC
+%%%----------------------Fin Traducción Clase Hijo2----------------------------
+
+%%%------------------------Traducción Clase Hijo3------------------------------
+
+%%%----------------------Traducción de init de  Hijo3--------------------------
+initHijo3	SetOut -1000310001			@print
+
+			%%%--------------Llamo al init de la clase initHijo2---------------
+			SetD Libre, pc+6            @PTR            %Guardo el puntero de retorno para volver de initHijo2
+			SetD Libre+1, Actual        @ED             %Guardo enlace dinámico
+			SetD Libre+2, D[Actual+2]   @This           %Guardo this
+			SetActual Libre                             %Muevo actual para que apunte al RA que acabo de crear
+			SetLibre Actual+3                         	%Muevo libre segun el tamaño del RA de initHijo2 (PR+ED+this+3par=6)
+			Jump initHijo2                      		%Salto al código de initHijo2 segun la VT del objeto receptor (el this del RA que acabo de crear)
+			SetH D[Actual+2]+5, 5   	@v5=5 			%Guardo el valor 4 en v4 a traves de this en el RA
+			
+			SetLibre Actual                            	%Limpio la memoria del RA de initHijo3
+			SetActual D[Libre+1]                       	%Muevo Actual a donde tenia el enlase dinamico
+			Jump D[Libre] 								%Actualizo PC
+
+%%%--------------------Traducción de superSeter de Hijo3----------------------
+superSeterHijo3	SetOut -1000320001					@print
+				
+				%%%-----------Llamo al superseter de la clase Hijo2----------
+				SetD Libre, pc+10            		@PTR                %Guardo el puntero de retorno para volver de superSeterHijo2
+				SetD Libre+1, Actual        		@ED                 %Guardo enlace dinámico
+				SetD Libre+2, D[Actual+2]   		@This               %Guardo this
+				SetD Libre+3, D[Actual+3]			@param p1
+				SetD Libre+4, D[Actual+4]			@param p2
+				SetD Libre+5, D[Actual+5]			@param p3
+				SetD Libre+6, D[Actual+6]			@param p4
+				SetActual Libre                               			%Muevo actual para que apunte al RA que acabo de crear
+				SetLibre Actual+7                            		   	%Muevo libre segun el tamaño del RA de superSeterHijo2 (PR+ED+this+4par=7)
+				Jump D[H[D[Actual+2]]+5]                      			%Salto al código de superSeterHijo2 segun la VT del objeto receptor (el this del RA que acabo de crear)
+				
+				SetH D[Actual+2]+5, D[Actual+7]   	@v5=p5 				%Guardo el valor del parámetro p4 en v4 a traves de this en el RA
+				
+				SetLibre Actual                                     	%Limpio la memoria del RA de superSeterHijo3
+				SetActual D[Libre+1]                                	%Muevo Actual a donde tenia el enlase dinamico
+				Jump D[Libre]											%Actualizo PC
+				
+%%%------------------------Traducción de m4 de Hijo3----------------------------
+m4Hijo3	SetLibre Libre+5
+
+		SetOut -1000340001			@print	
+
+		%%%--------------Leemos por pantalla el valor de v----------------------
+		SetIn Actual+3				@v=read()
+
+		%%%-------Traducción llamada y asignacion t2 = m7(8)--------------------
+		SetLibre Libre+1            @Lugar Retorno      %Como m7 devuelve algo reservo lugar para ese valor
+        SetD Libre, pc+7            @PTR                %Guardo el puntero de retorno para volver de m7
+        SetD Libre+1, Actual        @ED                 %Guardo enlace dinámico
+        SetD Libre+2, D[Actual+2]   @This               %Guardo this
+		SetD Libre+3, D[Actual+3]	@param v            %Paso por parametro v
+        SetActual Libre                                 %Muevo actual para que apunte al RA que acabo de crear 
+        SetLibre Actual+4                               %Muevo libre segun el tamaño del RA de m7 (PR+ED+this+p=4)
+		Jump D[H[D[Actual+2]]+7]                      	%Salto al código de m7 segun la VT del objeto receptor (el this del RA que acabo de crear)
+        SetD Actual+4, D[Libre-1]   @t2=m7(v)        	%Al volver de la llamada tengo en el lugar que reserve para el retorno el valor que guardo en t2
+        SetLibre Libre-1                                %Ya use el valor de retorno asi que lo libero
+		
+		%%%-------Traducción llamada y asignacion t1 = m5()---------------------
+		SetLibre Libre+1            @Lugar Retorno      %Como m6 devuelve algo reservo lugar para ese valor
+        SetD Libre, pc+6            @PTR                %Guardo el puntero de retorno para volver de m5
+        SetD Libre+1, Actual        @ED                 %Guardo enlace dinámico
+        SetD Libre+2, D[Actual+2]   @This               %Guardo this
+        SetActual Libre                                 %Muevo actual para que apunte al RA que acabo de crear
+        SetLibre Actual+3                               %Reservo espacio para PR+ED+this de m5
+        Jump D[H[D[Actual+2]]+4]                      	%Salto al código de m5 segun la VT del objeto receptor (el this del RA que acabo de crear)
+        SetD Actual+5, D[Libre-1]   @t1=m5()        	%Al volver de la llamada tengo en el lugar que reserve para el retorno el valor que guardo en t1
+        SetLibre Libre-1                                %Ya use el valor de retorno asi que lo libero
+		
+		%%%-------Creamos el Obj de clase Hijo4 y lo guardamos en x-------------
+		SetD Actual+6, PO       	@x = new Hijo4()      		%Guardo en x una ref al objeto que creo
+        SetH PO, VTHijo4        	@Obj. Clase Hijo4 - VTHijo4	%Le agrego la VT al nuevo objeto 
+        SetPO PO+7												%Incremento el PO segun el tamaño de objeto que cree (ref_VT+6var)
+		
+		%%%-------Traducción llamada y asignacion w = x.m3()--------------------
+		SetLibre Libre+1            @Lugar Retorno      %Como m3 devuelve algo reservo lugar para ese valor
+        SetD Libre, pc+6            @PTR                %Guardo el puntero de retorno para volver de m3
+        SetD Libre+1, Actual        @ED                 %Guardo enlace dinámico
+        SetD Libre+2, D[Actual+6]   @This               %Guardo this
+        SetActual Libre                                 %Muevo actual para que apunte al RA que acabo de crear para m3
+        SetLibre Actual+3                               %Reservo espacio para PR+ED+this de m3
+        Jump D[H[D[Actual+2]]+2]                      	%Salto al código de m3 segun la VT del objeto receptor (el this del RA que acabo de crear)
+        SetD Actual+7, D[Libre-1]   @w=x.m3()       	%Al volver de la llamada tengo en el lugar que reserve para el retorno el valor que guardo en w
+        SetLibre Libre-1                                %Ya use el valor de retorno asi que lo libero
+		
+		%%%-----------------Retorno w+t2+t1+(v1*v2)+(v3*v4*v5)-----------------
+		SetD Actual-1, (H[D[Actual+2]+3]*H[D[Actual+2]+4]*H[D[Actual+2]+5])+(H[D[Actual+2]+1]*H[D[Actual+2]+2])+D[Actual+7]+D[Actual+4]+D[Actual+5]	
+		
+		SetLibre Actual																	%Actualizo Libre
+		SetActual D[Libre+1]															%Actualizo Actual
+		Jump D[Libre]																	%Actualizo PC
+%%%----------------------Fin Traducción Clase Hijo3----------------------------
+
+%%%------------------------Traducción Clase Hijo4------------------------------
+
+%%%----------------------Traducción de init de  Hijo4--------------------------
+initHijo4	SetOut -1000410001			@print
+			
+			%%%--------------Llamo al init de la clase initHijo3-------------------
+			SetD Libre, pc+6            @PTR            %Guardo el puntero de retorno para volver de initHijo3
+			SetD Libre+1, Actual        @ED             %Guardo enlace dinámico
+			SetD Libre+2, D[Actual+2]   @This           %Guardo this
+			SetActual Libre                             %Muevo actual para que apunte al RA que acabo de crear
+			SetLibre Actual+3                         	%Muevo libre segun el tamaño del RA de initHijo3 (PR+ED+this+3var=6)
+			Jump initHijo3                      		%Salto al código de initHijo3 segun la VT del objeto receptor (el this del RA que acabo de crear)
+			
+			%%%-------Creamos el Obj de clase Hijo4 y lo guardamos en v6------------
+			SetH D[Actual+2]+6, PO   	@v6 = new Hijo4()        	%Guardo en v6 una ref al objeto que creo		
+			SetH PO, VTHijo4            @Obj. Clase Hijo4 - VTHijo4 %Le agrego la VT al nuevo objeto 
+			SetPO PO+7												%Incremento el PO segun el tamaño de objeto que cree (ref_VT+6var)
+			
+			%%%------Traducción llamada v6.superSeter(100,200,300,400,500)---------
+			SetD Libre, pc+11           	@PTR                %Guardo el puntero de retorno para volver del superSeter
+			SetD Libre+1, Actual        	@ED                 %Guardo enlace dinámico
+			SetD Libre+2, H[D[Actual+2]+6]	@This               %Guardo this
+			SetD Libre+3, 100				@param 100          %Paso por parametro 100
+			SetD Libre+4, 200				@param 200          %Paso por parametro 200
+			SetD Libre+5, 300				@param 300          %Paso por parametro 300
+			SetD Libre+6, 400				@param 400          %Paso por parametro 400
+			SetD Libre+7, 500				@param 500          %Paso por parametro 500
+			SetActual Libre                               		%Muevo actual para que apunte al RA que acabo de crear
+			SetLibre Actual+8                               	%Muevo libre segun el tamaño del RA de superSeter (PR+ED+this+5par=8)
+			Jump D[H[D[Actual+2]]+8]                      		%Salto al código de superSeter segun la VT del objeto receptor (el this del RA que acabo de crear)
+			
+			%%%-----------------Traducción seteo v6.v6 = Null---------------------
+			SetH H[D[Actual+2]+6]+6, -1						%Seteo el v6.v6 en null (-1)
+			
+			SetLibre Actual                                 %Limpio la memoria del RA de initHijo4
+			SetActual D[Libre+1]                            %Muevo Actual a donde tenia el enlase dinamico
+			Jump D[Libre]   								%Salto al la dirección contenida en PR
+
+%%%--------------------Traducción de superSeter de Hijo4----------------------
+superSeterHijo4	SetOut -1000420001				@print
+				
+				%%%-----------Llamo al superseter de la clase Hijo3----------
+				SetD Libre, pc+12            	@PTR	                %Guardo el puntero de retorno para volver de superSeterHijo3
+				SetD Libre+1, Actual        	@ED     	            %Guardo enlace dinámico
+				SetD Libre+2, D[Actual+2]   	@This       	        %Guardo this
+				SetD Libre+3, D[Actual+3]		@param p1
+				SetD Libre+4, D[Actual+4]		@param p2
+				SetD Libre+5, D[Actual+5]		@param p3
+				SetD Libre+5, D[Actual+3]		@param p4
+				SetD Libre+7, D[Actual+4]		@param p5
+				SetD Libre+8, D[Actual+5]		@param p6
+				SetActual Libre                               			%Muevo actual para que apunte al RA que acabo de crear
+				SetLibre Actual+8                            		   	%Muevo libre segun el tamaño del RA de superSeterHijo3 (PR+ED+this+5par=8)
+				Jump D[H[D[Actual+2]]+8]                      			%Salto al código de superSeterHijo3 segun la VT del objeto receptor (el this del RA que acabo de crear)
+				
+				SetLibre Actual                                     	%Limpio la memoria del RA de superSeterHijo4
+				SetActual D[Libre+1]                                	%Muevo Actual a donde tenia el enlase dinamico
+				Jump D[Libre]											%Actualizo PC
+				
+%%%------------------------Traducción de m4 de Hijo4----------------------------
+m4Hijo4	SetLibre Libre+4												%Reservo espacio para las variables locales
+
+		SetOut -1000440001						@print
+
+		%%%--------------Leemos por pantalla el valor de x----------------------
+		SetIn Actual+3							@x=read()
+		
+		%%%------------Traducción asignación t = v6-----------------------------
+		SetD Actual+4, H[D[Actual+2]+6]     	@t=v6            		%Guardo el valor de v6 en t
+		
+		%%%--------------Traducción sentencia for-------------------------------
+		SetD Actual+5, 0						@i=0					%Inicializo la variable de control
+inilp2	JumpT endlp2, !(D[Actual+5]<D[Actual+3])						%Salto al final del loop si es que no se da la condición
+		
+		JumpT endIt2, (D[Actual+5] > 3)									%Cuerpo del for: sentencia if() continue, salta a la próxima iteración si i>3
+		
+		%%%------Creamos el Obj de clase Hijo4 y lo guardamos en t.v6-----------
+		SetH D[Actual+4]+6, PO   	@t.v6 = new Hijo4()        	%Guardo en t.v6 una ref al objeto que creo
+		SetH PO, VTHijo4            @Obj. Clase Hijo4 - VTHijo4 %Le agrego la VT al nuevo objeto 
+		SetPO PO+7												%Incremento el PO segun el tamaño de objeto que cree (ref_VT+6var)
+		
+		%%%------------Traducción asignación t = t.v6---------------------------
+		SetD Actual+4, H[D[Actual+4]+6]    @t=t.v6 	        %Guardo el valor de t.v6 en t
+		
+		%%%----------------Traducción llamada t.init()--------------------------
+		SetD Libre, pc+6           		@PTR                %Guardo el puntero de retorno para volver del init
+		SetD Libre+1, Actual       		@ED                 %Guardo enlace dinámico
+		SetD Libre+2, D[Actual+4]		@This               %Guardo this
+		SetActual Libre                                 	%Muevo actual para que apunte al RA que acabo de crear
+		SetLibre Actual+3                               	%Reservo espacio para PR+ED+this de init
+		Jump D[H[D[Actual+2]]]                      		%Salto al código de init segun la VT del objeto receptor (el this del RA que acabo de crear)
+		
+endIt2	SetD Actual+5, D[Actual+5]+1 	@i++				%Incremento en 1 a la variable de control i
+		Jump inilp2 										%Salto al inicio del loop
+
+		%%%-------Traducción llamada y asignacion t1 = m6()--------------------
+endlp2	SetLibre Libre+1            @Lugar Retorno      %Como m6 devuelve algo reservo lugar para ese valor
+        SetD Libre, pc+6            @PTR                %Guardo el puntero de retorno para volver de m6
+        SetD Libre+1, Actual        @ED                 %Guardo enlace dinámico
+        SetD Libre+2, D[Actual+2]   @This               %Guardo this
+        SetActual Libre                                 %Muevo actual para que apunte al RA que acabo de crear
+        SetLibre Actual+3                               %Reservo espacio para PR+ED+this de m5
+        Jump D[H[D[Actual+2]]+6]                      	%Salto al código de m6 segun la VT del objeto receptor (el this del RA que acabo de crear)
+        SetD Actual+6, D[Libre-1]   @t1 = m6()       	%Al volver de la llamada tengo en el lugar que reserve para el retorno el valor que guardo en t1
+        SetLibre Libre-1                                %Ya use el valor de retorno asi que lo libero
+
+		%%%--------------Retorno t1+((v1+v2)/(v3+v4))*(v5)--------------------
+		SetD Actual-1, (((H[D[Actual+2]+1]+H[D[Actual+2]+2])/(H[D[Actual+2]+3]+H[D[Actual+2]+4]))*H[D[Actual+2]+5])+D[Actual+6]	
+		
+		SetLibre Actual									%Actualizo Libre
+		SetActual D[Libre+1]							%Actualizo Actual
+		Jump D[Libre]									%Actualizo PC
+		
+%%%------------------------Traducción de m6 de Hijo4----------------------------
+m6Hijo4	SetLibre Libre+2											%Reservo espacio para las variables locales
+		
+		SetOut -1000460001						@print
+		
+		%%%-------------Traducción asignación t = v6----------------------------
+		SetD Actual+3, H[D[Actual+2]+6]     	@t=v6            	%Guardo el valor de v6 en t
+		
+		SetD Actual+4, 0						@r=0				%Inicializo la variable de control
+		
+		%%%-------------Traducción sentencia while------------------------------
+iniwh	JumpT endwh, !(H[D[Actual+3]+6] != -1)
+		
+		%%%----------------Traducción cuerpo while------------------------------
+		
+		%%%-------Traducción llamada y asignacion r = t.m7(r)+r-----------------
+		SetLibre Libre+1            			@Lugar Retorno      %Como m7 devuelve algo reservo lugar para ese valor
+        SetD Libre, pc+7            			@PTR                %Guardo el puntero de retorno para volver de m3
+        SetD Libre+1, Actual       				@ED                 %Guardo enlace dinámico
+        SetD Libre+2, D[Actual+3]   			@This               %Guardo this
+		SetD Libre+3, D[Actual+4]				@param r          	%Paso por parámetro r
+        SetActual Libre                                 			%Muevo actual para que apunte al RA que acabo de crear
+        SetLibre Actual+4                               			%Muevo libre segun el tamaño del RA de m7 (PR+ED+this+p=4)
+        Jump D[H[D[Actual+2]]+7]                      				%Salto al código de m7 segun la VT del objeto receptor (el this del RA que acabo de crear)
+        SetD Actual+4, D[Libre-1]+D[Actual+4]   @r=t.m7(r)+r       	%Guardo en r el valor que retorno m7(r) más el valor de r
+        SetLibre Libre-1                                			%Ya use el valor de retorno asi que lo libero
+
+		%%%------------Traducción asignación t = t.v6---------------------------
+		SetD Actual+3, H[D[Actual+3]+6]     	@t=t.v6            	%Guardo el valor de t.v6 en t
+		
+		Jump iniwh
+		%%%--------------Traducción fin cuerpo while----------------------------
+		
+endwh	SetD Actual-1, D[Actual+4]						%Retorno r	
+		
+		SetLibre Actual									%Actualizo Libre
+		SetActual D[Libre+1]							%Actualizo Actual
+		Jump D[Libre]									%Actualizo PC
+%%%----------------------Fin Traducción Clase Hijo4----------------------------	
+
+%%%-----------------Traducción Clase Lenguajes2018Tema2------------------------
+
+%%%---------------Traducción de main de Lenguajes2018Tema2---------------------
+main	SetOut -1000910001			@print
+		
+		%%%------Creamos el Obj de clase Padre y lo guardamos en v1------------
+		SetD Actual+2, PO   		@v1 = new Padre()        	%Guardo en v1 una ref al objeto que creo
+		SetH PO, VTPadre        	@Obj. Clase Padre - VTPadre %Le agrego la VT al nuevo objeto 
+		SetPO PO+4												%Incremento el PO segun el tamaño de objeto que cree (ref_VT+3var)
+		
+		%%%----------------Traducción llamada computar(v1)---------------------
+		SetD Libre, pc+6           	@PTR                %Guardo el puntero de retorno para volver del init
+		SetD Libre+1, Actual       	@ED                 %Guardo enlace dinámico
+		SetD Libre+2, D[Actual+2]	@param v1          	%Paso por parámetro v1
+		SetActual Libre                                 %Muevo actual para que apunte al RA que acabo de crear
+		SetLibre Actual+5                               %Muevo libre segun el tamaño del RA de computar (PR+ED+p+x+r=5)
+		Jump computar                      				%Salto al código de init segun la VT del objeto receptor (el this del RA que acabo de crear)
+		
+		SetLibre Actual									%Actualizo Libre
+		SetActual D[Libre+1]							%Actualizo Actual
+		Jump D[Libre]									%Actualizo PC
+
+%%%---------------Traducción de computar de Lenguajes2018Tema2-----------------		
+computar	SetOut -1000920001				@print	
+			
+			%%%----------------Traducción llamada p.init()---------------------
+			SetD Libre, pc+6            	@PTR            	%Guardo el puntero de retorno para volver de init
+			SetD Libre+1, Actual       		@ED                 %Guardo enlace dinámico
+			SetD Libre+2, D[Actual+2]   	@This               %Guardo this
+			SetActual Libre                           			%Muevo actual para que apunte al RA que acabo de crear
+			SetLibre Actual+3               	      			%Muevo libre segun el tamaño del RA de init (PR+ED+this=3)
+			Jump D[H[D[Actual+2]]]                 				%Salto al código de init segun la VT del objeto receptor (el this del RA que acabo de crear)
+			
+			%%%--------------Leemos por pantalla el valor de x----------------------
+			SetIn Actual+3						@x=read()
+			
+			SetH D[Actual+2]+1, D[Actual+3]		@p.v1=x			%Seteo el p.v1 con el valor de x
+			
+			%%%-------Traducción llamada y asignacion r = p.m3()--------------------
+			SetLibre Libre+1            		@Lugar Retorno      %Como m3 devuelve algo reservo lugar para ese valor
+			SetD Libre, pc+6           	 		@PTR                %Guardo el puntero de retorno para volver de m3
+			SetD Libre+1, Actual        		@ED                 %Guardo enlace dinámico
+			SetD Libre+2, D[Actual+2]   		@This               %Guardo this
+			SetActual Libre                                 		%Muevo actual para que apunte al RA que acabo de crear para m3
+			SetLibre Actual+3                               		%Reservo espacio para PR+ED+this de m3
+			Jump D[H[D[Actual+2]]+2]                      			%Salto al código de m3 segun la VT del objeto receptor (el this del RA que acabo de crear)
+			SetD Actual+4, D[Libre-1]   		@r=p.m3()       	%Al volver de la llamada tengo en el lugar que reserve para el retorno el valor que guardo en r
+			SetLibre Libre-1                                		%Ya use el valor de retorno asi que lo libero
+			
+			SetOut D[Actual+4]					@print
+			
+			SetLibre Actual											%Actualizo Libre
+			SetActual D[Libre+1]									%Actualizo Actual
+			Jump D[Libre]											%Actualizo PC
+			
+			
+			
+			
+			
